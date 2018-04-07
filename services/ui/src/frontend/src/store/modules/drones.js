@@ -2,6 +2,7 @@
 /* eslint-disable */
 import _ from 'lodash';
 import Notification from '../../notification';
+import droneBase from './drones-base';
 
 export const types = {
   NEW_DRONE: 'NEW_DRONE',
@@ -16,22 +17,6 @@ export const droneStates = {
   MAINTENANCE: 'MAINTENANCE',
 };
 
-const droneBase = {
-  x: 0,
-  y:0,
-  status: droneStates.READY,
-  transport: {
-    from: {
-      x:0,
-      y:0,
-    },
-    to: {
-      x:0,
-      y:0,
-    },
-  },
-};
-
 export default {
   namespaced: true,
   state: {
@@ -41,12 +26,9 @@ export default {
     drones: state => state.drones,
   },
   mutations: {
-    [types.NEW_DRONE](state, droneObj) {
-      state.drones.push({ ...droneBase, ...droneObj });
-    },
+    [types.NEW_DRONE](state, droneObj) { state.drones.push({ ...droneBase, ...droneObj }); },
     [types.SET_LOCATION](state, moveData) {
-      const { index, location } = moveData;
-      state.drones[index] = { ...state.drones[index], location };
+      const { index, location } = moveData; state.drones[index] = { ...state.drones[index], location };
     },
     [types.SET_TRANSPORT](state, transportData) {
       const { index, fromLocation, toLocation, droneState } = transportData;

@@ -5,6 +5,8 @@ import _ from 'lodash';
 import Notification from '../../notification';
 import web3 from '../../web3';
 import SampleArtifact from '../../contracts/Sample.json';
+import types from './voting-types';
+import votingMutations from './voting-mutations';
 
 const Sample = contract(SampleArtifact);
 
@@ -14,15 +16,6 @@ const contractConn = new web3.eth.Contract(SampleArtifact.abi, {
   gasPrice: '20000000000', // default gas price in wei, 20 gwei in this case
 });
 
-export const types = {
-  SET_CONTRACT_CONN: 'SET_CONTRACT_CONN',
-  UPDATE_CHOICE: 'UPDATE_CHOICE',
-  ADD_CHOICE: 'ADD_CHOICE',
-  UPDATE_CHOICE_VOTES: 'UPDATE_CHOICE_VOTES',
-  SUBMIT_CHOICE_SENT: 'SUBMIT_CHOICE_SENT',
-  SUBMIT_CHOICE_CLEARED: 'SUBMIT_CHOICE_CLEARED',
-  SUBMIT_CHOICE_ERROR: 'SUBMIT_CHOICE_ERROR',
-};
 
 export default {
   namespaced: true,
@@ -35,31 +28,7 @@ export default {
     choices: state => [...state.choices].sort((a, b) => b.choiceName <= a.choiceName),
     currentChoice: state => state.currentChoice,
   },
-  mutations: {
-    [types.ADD_CHOICE](state, choiceObj) {
-      state.choices = [...state.choices, choiceObj];
-    },
-    [types.UPDATE_CHOICE](state, choice) {
-      state.currentChoice = choice;
-    },
-    [types.UPDATE_CHOICE_VOTES](state, choiceObj) {
-      state.choices = state.choices.map((choice) => (
-        choice.choiceName !== choiceObj.choiceName ? choice : choiceObj
-      ));
-    },
-    [types.SUBMIT_CHOICE_SENT](state) {
-      state.submitSENT = true;
-    },
-    [types.SUBMIT_CHOICE_CLEARED](state) {
-      state.submitSENT = false;
-      state.currentChoice = '';
-    },
-    [types.SUBMIT_CHOICE_ERROR](state, error) {
-      state.submitSENT = false;
-      state.currentChoice = '';
-      state.error = error;
-    },
-  },
+  mutations: votingMutations,
   actions: {
     async boot({ commit }) {
       try {
