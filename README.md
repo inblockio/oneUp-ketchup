@@ -21,9 +21,9 @@ This boilerplate consist of 6 applications, each running in its own docker conta
 ## Install
 
 ```
-git clone git@github.com:BlockChainCompany/blockchaingers-food-challenge-private.git
+git clone git@github.com:Blockchaingers/oneUp-ketchup.git
 
-cd blockchaingers-food-challenge-private
+cd oneUp-ketchup
 
 npm run setup
 npm run create

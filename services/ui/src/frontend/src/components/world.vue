@@ -129,8 +129,17 @@ export default {
   created() {
     // eslint-disable-next-line
     // window.addEventListener('keyup', this.logStats);
+    this.startListeningWs();
   },
   methods: {
+    startListeningWs() {
+      console.log('setting up socket');
+      const socket = io('http://localhost', {path: '/api/socket.io'}); // eslint-disable-line
+      socket.on('news', (data) => {
+        console.log('GOT NEW AI DATA', data);
+        // @jurr UPDATE THE UI/GRID WITH THE NEW AI DATA
+      });
+    },
     tick() {
       console.log('tick');
       this.renderGrid();
