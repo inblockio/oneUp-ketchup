@@ -14,9 +14,7 @@ export default {
       checkAuthIntervalRef: null,
     };
   },
-  created() {
-    this.$store.dispatch('voting/boot');
-  },
+  created() {},
   mounted() {
     const fn = () => {
       this.$store.dispatch('auth/checkAuth');
