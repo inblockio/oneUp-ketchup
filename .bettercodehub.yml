@@ -1,2 +1,2 @@
 exclude:
-- /services/ui/src/frontend/build/
+- /services/ui/src/frontend/build/.*
