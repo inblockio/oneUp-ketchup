@@ -30,7 +30,8 @@
     "logs:ganache": "docker-compose logs ganache",
     "logs:ganache:tail": "docker-compose logs -f ganache",
     "logs:mongo": "docker-compose logs mongo",
-    "logs:mongo:tail": "docker-compose logs -f mongo"
+    "logs:mongo:tail": "docker-compose logs -f mongo",
+    "sim:start": "node ./services/api/src/simulator"
   },
   "pre-commit": {
     "run": "lint",
