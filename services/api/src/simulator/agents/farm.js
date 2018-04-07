@@ -1,30 +1,38 @@
-module.exports = function createFarm(farm, world) {
-  let crops = [];
-  let harvest;
+const createStorage = require('./storage');
+const createCrop = require('./crop');
 
-  function doHarvest(harvest) {
-    if (harvest.canHarvest()) {
-      const crops = harvest.harvest();
-      farm.storage.store(crop);
-      harvest = null;
-    } 
+const HARVEST_TIME = 10;
+module.exports = function createFarm(farm, world) {
+  let harvestElapsed = 0;
+
+  const storage = createStorage({
+    name: 'Ben storage',
+  }, world);
+  world.addAgent(storage);
+
+  function doHarvest() {
+    const crop = createCrop({
+      name: 'Ben crop',
+      quantity: 10,
+      rottingRate: 10,
+    });
+    storage.store(crop);
+    world.addAgent(crop);
   }
-  function tick() { 
-    if (!harvest) {
-      harvest = createHarvest({ 
-        harvestPeriod: 5, 
-        quantity: 100,
-        type: 'tomato',
-      });
-      world.addAgent(harvest);
-    }
-    if (harvest.canHarvest()) {
-      doHarvest(harvest);
+  function tick() {
+    harvestElapsed--;
+    if (harvestElapsed <= 0) {
+      doHarvest();
+      harvestElapsed = HARVEST_TIME;
     }
   }
-  
+  function getState() {
+    return { ...farm, harvestElapsed };
+  }
+
   return {
     tick,
-  }; 
+    getState,
+  };
 }
 

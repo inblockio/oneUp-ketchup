@@ -1,20 +1,20 @@
 module.exports = function createWorld() {
   const agents = [];
   
+  function printWorld() {
+    agents.forEach((agent) => {
+      console.log(agent.getState()); 
+    });
+  }
   function tick() {
-    //vehicles.forEach((vehicle) => {
-      //vehicle.execute();
-    //});
-    //storages.forEach((storage) => {
-      //storage.execute();
-    //});
     agents.forEach((agent) => {
       agent.tick();
     });
+    printWorld();
   }
 
   return {
     tick,
-    addAgent: (agent) => { agents.push(); },
+    addAgent: (agent) => { agents.push(agent); },
   };
 }

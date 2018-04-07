@@ -1,15 +1,16 @@
-const craeteCrop = require('./crop');
+const createCrop = require('./crop');
 
 module.exports = function createHarvest(harvest, world) {
-  const harvestElapsed = harvest.harvestPeriod;
+  console.log('harvest', harvest);
+  let harvestElapsed = harvest.harvestPeriod;
 
   function tick () {
     harvestElapsed--; 
   }
-  function canHarvest () {
+  function canHarvest() {
     return harvestElapsed === 0;
   }
-  function harvest () {
+  function harvest() {
     harvestElapsed = harvest.harvestPeriod;
     const crop = createCrop({
       rottingRate: 2,
@@ -17,11 +18,18 @@ module.exports = function createHarvest(harvest, world) {
     world.addAgent(crop);
     return crop;
   }
+  function getState() {
+    return {
+      ...harvest,
+      harvestElapsed,
+    };
+  }
   
   return {
     tick,
     canHarvest,
+    getState,
+    harvest,
   };
 }
-
 

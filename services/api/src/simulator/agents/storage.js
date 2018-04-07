@@ -5,13 +5,18 @@ module.exports = function createStorage(storage) {
     // @todo add logic of vehicle
   }
   function store(crop) {
-    crops.add(crop);
-    const vehicle = // comes from something;
-    vehicle.load(crop);
+    crops.push(crop);
+  }
+  function getState() {
+    return {
+      ...storage,
+      crops: crops.length,
+    };
   }
 
   return {
     tick,
     store,
+    getState,
   };
 }

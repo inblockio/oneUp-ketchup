@@ -1,27 +1,15 @@
 const createEngine = require('./simulator/engine');
 const createWorld = require('./simulator/world');
 const createFarm = require('./simulator/agents/farm');
-const createHarvest = require('./simulator/agents/harvest');
-const createStorage = require('./simulator/agents/storage');
 
 const world = createWorld();
 const engine = createEngine(world);
 
-const harvestTomatoBen = createHarvest({ 
-  harvestPeriod: 5, 
-  quantity: 100,
-  type: 'tomato',
-});
 const farmBen = createFarm({ 
   name: 'Ben farm', 
-  harvests: [harvestTomatoBen], 
-});
-
-const storageBen = createStorage({
-  name: 'Ben storage',
 }, world);
 
-world.addAgent(harvestTomatoBen);
+world.addAgent(farmBen);
 
 engine.start();
 
