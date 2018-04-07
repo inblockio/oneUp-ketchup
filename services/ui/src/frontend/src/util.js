@@ -3,7 +3,9 @@
 import * as THREE from 'three';
 
 export const getTexture = function (filePath, repeatX = 100, repeatY = 100) {
-  const texture = new THREE.TextureLoader().load(`/static/${filePath.toLowerCase()}`);
+  const path = `/static/${filePath.toLowerCase()}`;
+  console.log(path);
+  const texture = new THREE.TextureLoader().load(path);
   texture.wrapS = THREE.RepeatWrapping;
   texture.wrapT = THREE.RepeatWrapping;
   texture.repeat.set(repeatX, repeatY);

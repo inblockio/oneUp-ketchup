@@ -39,7 +39,6 @@ export default {
   },
   getters: {
     drones: state => state.drones,
-    getDrone: state => state.drones,
   },
   mutations: {
     [types.NEW_DRONE](state, droneObj) {

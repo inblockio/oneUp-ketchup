@@ -13,7 +13,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
 import LayoutFull from '../layout/full.vue';
 import LayoutMinimal from '../layout/minimal.vue';
 import Card from '../components/card.vue';
@@ -28,7 +27,6 @@ export default {
     world: World,
   },
   computed: {
-    ...mapGetters('drones', ['drones']),
   },
   methods: {
   },
