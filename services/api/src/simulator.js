@@ -13,6 +13,11 @@ world.createFarm({
   name: 'Jurrr',
 }, world);
 
+world.createCity({
+  name: 'City',
+  hungerPerTick: 10,
+}, world);
+
 engine.start();
 
 

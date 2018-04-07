@@ -12,6 +12,15 @@ module.exports = function createStorage(storage, world) {
     crops.push(crop);
   }
 
+  function take(quantity) {
+    const takenQuantity = 0;
+    for(let i = 0; i < crops.length; i++) {
+      if (takenQuantity <= quantity) break;
+      takenQuantity += crops[i].use(takenQuantity - quantity);
+    }
+    return takenQuantity;
+  }
+
   function getState() {
     return {
       ...storage,
@@ -31,5 +40,6 @@ module.exports = function createStorage(storage, world) {
 
     // custom method
     store,
+    take,
   };
 }

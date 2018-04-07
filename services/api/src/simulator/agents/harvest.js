@@ -1,11 +1,10 @@
 const createCrop = require('./crop');
 
 module.exports = function createHarvest(harvest, world) {
-  console.log('harvest', harvest);
   let harvestElapsed = harvest.harvestPeriod;
 
   function tick () {
-    harvestElapsed--; 
+    harvestElapsed--;
   }
   function canHarvest() {
     return harvestElapsed === 0;
@@ -24,7 +23,7 @@ module.exports = function createHarvest(harvest, world) {
       harvestElapsed,
     };
   }
-  
+
   return {
     tick,
     canHarvest,

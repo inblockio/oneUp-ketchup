@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "description": "App Exchange - API",
   "scripts": {
-    "start:dev": "nodemon --watch /app/api/src ./src/api.js",
-    "start:prod": "node ./src/api.js"
+    "start:dev": "nodemon --watch /app/api/src ./src/simulator.js",
+    "start:prod": "node ./src/simulator.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

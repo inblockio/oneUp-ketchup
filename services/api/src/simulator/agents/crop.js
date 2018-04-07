@@ -27,6 +27,17 @@ module.exports = function createCrop(crop, world) {
       isRotten,
     };
   }
+  function use(value) {
+    let toUse;
+    if (value >= quantity) {
+      toUse = quantity;
+      quantity = 0;
+    } else {
+      toUse = value;
+      quantity = quantity - value;
+    }
+    return toUse;
+  }
 
   return {
     tick,
@@ -35,6 +46,11 @@ module.exports = function createCrop(crop, world) {
     getType: () => type,
 
     getState,
+
+    getQuantity: () => quantity,
+    getQuality: () => quality,
+    isRotten: () => isRotten,
+    use,
   };
 }
 

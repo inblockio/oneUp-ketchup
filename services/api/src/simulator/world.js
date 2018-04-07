@@ -1,6 +1,7 @@
 const createAgentCrop = require('./agents/crop');
 const createAgentStorage = require('./agents/storage');
 const createAgentFarm = require('./agents/farm');
+const createAgentCity = require('./agents/city');
 
 module.exports = function createWorld() {
   let nextId = 1;
@@ -39,11 +40,17 @@ module.exports = function createWorld() {
     addAgent(fram);
     return fram;
   }
+  function createCity(def) {
+    const city = createAgentCity(def, world);
+    addAgent(city);
+    return city;
+  }
   world.tick = tick;
   world.addAgent = addAgent;
   world.createCrop = createCrop;
   world.createStorage = createStorage;
   world.createFarm = createFarm;
+  world.createCity = createCity;
   world.getId = getId;
   return world;
 }
