@@ -5,7 +5,18 @@ module.exports = function createWorld() {
   const producers = [];
   
   function execute() {
-    console.log('execute world');
+    vehicles.forEach((vehicle) => {
+      vehicle.execute();
+    });
+    storages.forEach((storage) => {
+      storage.execute();
+    });
+    consumers.forEach((consumer) => {
+      consumer.execute();
+    });
+    producers.forEach((producer) => {
+      producer.execute();
+    });
   }
   return {
     execute,
