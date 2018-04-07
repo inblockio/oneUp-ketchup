@@ -1,28 +1,20 @@
 module.exports = function createWorld() {
-  const vehicles = [];
-  const storages = [];
-  const consumers = [];
-  const producers = [];
+  const agents = [];
   
-  function execute() {
-    vehicles.forEach((vehicle) => {
-      vehicle.execute();
-    });
-    storages.forEach((storage) => {
-      storage.execute();
-    });
-    consumers.forEach((consumer) => {
-      consumer.execute();
-    });
-    producers.forEach((producer) => {
-      producer.execute();
+  function tick() {
+    //vehicles.forEach((vehicle) => {
+      //vehicle.execute();
+    //});
+    //storages.forEach((storage) => {
+      //storage.execute();
+    //});
+    agents.forEach((agent) => {
+      agent.tick();
     });
   }
+
   return {
-    execute,
-    addVehicle: () => {},
-    addStorage: () => {},
-    addProducer: () => {},
-    addConsumer: () => {},
-  }
+    tick,
+    addAgent: (agent) => { agents.push(); },
+  };
 }

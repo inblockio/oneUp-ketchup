@@ -3,12 +3,12 @@ module.exports = function createEngine(world) {
   let currentTick = 0;
   let interval;
 
-  function runTick() {
+  function tick() {
     console.log('Thick'); 
-    world.execute();
+    world.tick();
   }
   function start() {
-    interval = setInterval(runTick, 2000);   
+    interval = setInterval(tick, 2000);   
   }
 
   return {
