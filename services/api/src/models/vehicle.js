@@ -36,3 +36,5 @@ const VehicleSchema = new mongoose.Schema({
     type: Number,
   },
 });
+
+module.exports = mongoose.model('Vehicle', VehicleSchema);

@@ -1,7 +1,8 @@
 /* eslint no-unused-vars: ["error", { "argsIgnorePattern": "next" }] */
 
 require('./seedDb');
-
+require('./monitor');
+/*
 const http = require('http');
 const compression = require('compression');
 const bodyParser = require('body-parser');
@@ -56,3 +57,4 @@ const server = http.Server(app);
 
 // start the server
 server.listen(API_PORT, () => log.info(`listening on port ${API_PORT}`));
+*/
