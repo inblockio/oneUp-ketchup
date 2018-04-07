@@ -4,11 +4,14 @@ require('./seedDb');
 require('./monitor');
 /*
 const http = require('http');
+const socketio = require('socket.io');
 const compression = require('compression');
 const bodyParser = require('body-parser');
 const express = require('express');
 const winston = require('winston');
 const expressWinston = require('express-winston');
+
+require('./simulator');
 
 const log = require('./logger');
 const router = require('./router');
@@ -44,6 +47,12 @@ app.use(expressWinston.logger({
 // mount the api
 app.use(API_ROUTE_PREFIX, router);
 
+app.use(express.static('public'));
+
+const server = http.Server(app);
+
+const io = socketio(server, { path: '/api/socket.io'});
+
 // catch no route matched --> 404
 app.use((req, res, next) => next(new Error('Page not found')));
 
@@ -53,7 +62,21 @@ app.use((err, req, res, next) => {
   res.status(400).json(err.message || err);
 });
 
-const server = http.Server(app);
+const world = require('./simulator/world');
+
+io.on('connection', function (socket) {
+
+  const relayToBrowser = (data) => {
+    io.emit('news', data);
+  };
+
+  //world.on('tick', relayToBrowser);
+
+  socket.on('disconnect', function () {
+    io.emit('user disconnected');
+    //world.removeListener('news', relayToBrowser);
+  });
+});
 
 // start the server
 server.listen(API_PORT, () => log.info(`listening on port ${API_PORT}`));

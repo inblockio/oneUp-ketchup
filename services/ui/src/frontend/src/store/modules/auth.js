@@ -37,12 +37,8 @@ export default {
   },
   mutations: {
     // email
-    [types.UPDATE_EMAIL](state, value) {
-      state.email = value;
-    },
-    [types.CLEAR_EMAIL](state) {
-      state.email = '';
-    },
+    [types.UPDATE_EMAIL](state, value) { state.email = value; },
+    [types.CLEAR_EMAIL](state) { state.email = ''; },
 
     // password
     [types.UPDATE_PASSWORD](state, value) {

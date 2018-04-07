@@ -67,12 +67,12 @@ services:
 
   # mongodb
   mongo:
-    build: ./services/mongodb
+    image: mongo
     restart: always
-    ports:
-      # allow acces from (only!) localhost to mongo port 27017 so you can use
-      # MongoHub or some other app to connect to the mongodb and view its contents
-      - "127.0.0.1:27017:27017"
+    # ports:
+    #   # allow acces from (only!) localhost to mongo port 27017 so you can use
+    #   # MongoHub or some other app to connect to the mongodb and view its contents
+    #   - "127.0.0.1:27017:27017"
     volumes:
       - ./data/mongo:/data/db
       - ./logs:/var/log/mongodb

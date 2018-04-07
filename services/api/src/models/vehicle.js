@@ -14,12 +14,16 @@ const VehicleSchema = new mongoose.Schema({
   capacity: {
     type: Number,
   },
-  positionX: {
-    type: Number,
-  },
-  positionY: {
-    type: Number,
-  },
+  position: {
+		x: {
+			type: Number,
+			required: true,
+		},
+		y: {
+			type: Number,
+			required: true,
+		}
+	},
   speed: {
     type: Number,
   },
