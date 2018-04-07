@@ -10,14 +10,25 @@ const StorageSchema = new mongoose.Schema({
     type: String,
     default: uuid.v4,
   },
-  email: {
+  storageType: {
     type: String,
+    enum: ['farm', 'coop', 'city'],
     required: true,
-    unique: true,
   },
-  password: {
-    type: String,
-    required: true,
+  capacity: {
+    type: Number,
+  },
+  positionX: {
+    type: Number,
+  },
+  positionY: {
+    type: Number,
+  },
+  rottingFactor: {
+    type: Number,
+  },
+  stock: {
+    type: Number,
   },
   keyStore: {
     type: Object,
