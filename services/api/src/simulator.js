@@ -5,11 +5,13 @@ const createFarm = require('./simulator/agents/farm');
 const world = createWorld();
 const engine = createEngine(world);
 
-const farmBen = createFarm({ 
-  name: 'Ben farm', 
+world.createFarm({
+  name: 'Ben farm',
 }, world);
 
-world.addAgent(farmBen);
+world.createFarm({
+  name: 'Jurrr',
+}, world);
 
 engine.start();
 
@@ -25,17 +27,17 @@ engine.start();
  *   }
  * }],
  * storages: [{
- *   id: 
+ *   id:
  *   position: { x, y }
  *   crops: Crop,
  * }]
  * consumer: [{
  *    id,
  *    position:
- *    crops:{  } 
+ *    crops:{  }
  *    hungerPerTick
  *    haungerLevel: [0, 1, 2]
  * }],
  * farms: [],
- * 
+ *
  */

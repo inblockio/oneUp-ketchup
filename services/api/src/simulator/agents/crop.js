@@ -1,4 +1,5 @@
-module.exports = function createCrop(crop) {
+module.exports = function createCrop(crop, world) {
+  console.log(world);
   let quality = 100;
   let isRotten = false;
   const { rottingRate } = crop;
