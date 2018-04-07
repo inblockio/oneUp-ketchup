@@ -9,8 +9,12 @@ const bodyParser = require('body-parser');
 const express = require('express');
 const winston = require('winston');
 const expressWinston = require('express-winston');
+const startSimulation = require('./simulation');
+const createEngine = require('./simulator/engine');
+const createWorld = require('./simulator/world');
 
-require('./simulator');
+const world = createWorld();
+const engine = createEngine(world);
 
 const log = require('./logger');
 const router = require('./router');
@@ -61,21 +65,20 @@ app.use((err, req, res, next) => {
   res.status(400).json(err.message || err);
 });
 
-const world = require('./simulator/world');
-
-io.on('connection', function (socket) {
-
+io.on('connection', (socket) => {
+  console.log('startSimulation');
   const relayToBrowser = (data) => {
     io.emit('news', data);
   };
 
-  //world.on('tick', relayToBrowser);
+  world.eventEmitter.on('TICK_COMPLETED', relayToBrowser);
 
-  socket.on('disconnect', function () {
+  socket.on('disconnect', () => {
     io.emit('user disconnected');
-    //world.removeListener('news', relayToBrowser);
+    world.eventEmitter.removeListener('news', relayToBrowser);
   });
 });
+startSimulation(engine);
 
 // start the server
 server.listen(API_PORT, () => log.info(`listening on port ${API_PORT}`));

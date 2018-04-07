@@ -14,5 +14,6 @@ module.exports = function createEngine(world) {
 
   return {
     start,
+    world,
   };
 };
