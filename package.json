@@ -33,10 +33,6 @@
     "logs:mongo:tail": "docker-compose logs -f mongo",
     "sim:start": "node ./services/api/src/simulator"
   },
-  "pre-commit": {
-    "run": "lint",
-    "silent": false
-  },
   "dependencies": {
     "copy-dir": "^0.3.0",
     "mkdirp": "^0.5.1",
