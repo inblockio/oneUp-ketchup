@@ -3,13 +3,11 @@
   artifacts:true,
 */
 
-const Sample = artifacts.require('./Sample.sol');
+const TomatoesMarket = artifacts.require('./TomatoesMarket.sol');
 
 module.exports = async (deployer) => {
   // deploy with the possible choices
   await deployer.deploy(
-    Sample,
-    'name of contract',
-    ['Utrecht', 'Amsterdam', 'Rotterdam', 'Den Haag'],
+    TomatoesMarket,
   );
 };

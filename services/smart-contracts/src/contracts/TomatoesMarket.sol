@@ -10,14 +10,21 @@ contract TomatoesMarket {
     address storageAddress;
   }
 
+  struct Crate {
+    uint crateId;
+    address farmer;
+    uint amount;
+    uint quality;
+    uint harvestTimeStamp;
+  }
+
   struct Order {
+    uint orderId;
+    uint crateId;
     address source;
     address destination;
-    uint amount;
-    uint price;
     OrderState state;
     address carrier;
-    //time stamp?    
   }
 
   //                00        01          02
@@ -29,12 +36,16 @@ contract TomatoesMarket {
   //List of storages
   mapping(address => Storage) public storages;
 
+  //List of crates
+  uint public lastCrateId;
+  mapping(uint => Crate) crates;
+
   //List of orders
   uint public lastOrderId;
   mapping(uint => Order) orders;
 
   //Events
-  event LogNewOrder(uint orderId, address source, address destination, uint amount, uint price);
+  event LogNewOrder(uint orderId, uint crateId, address source, address destination);
   event LogExecutingOrder(uint orderId, address carrier);
   event LogCompletedOrder(uint orderId);
 
@@ -51,9 +62,14 @@ contract TomatoesMarket {
     storages[storageAddress] = Storage(storageAddress);
   }
 
-  function newOrder(address source, address destination, uint amount, uint price) public {
-    orders[lastOrderId++] = Order(source, destination, amount, price, OrderState.Placed, address(0));
-    LogNewOrder(lastOrderId, source, destination, amount, price);
+  function addCrate(address farmer, uint amount, uint quality, uint harvestTime) public {
+    
+  }
+
+  function newOrder(uint crateId, address source, address destination, uint amount, uint quality) public {
+    lastOrderId++;
+    orders[lastOrderId] = Order(lastOrderId, crateId, source, destination, OrderState.Placed, address(0));
+    LogNewOrder(lastOrderId, crateId, source, destination);
   }
 
   function executeOrder(uint orderId, address carrier) public {
