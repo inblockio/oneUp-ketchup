@@ -6,6 +6,6 @@ const services = ['api', 'ui', 'smart-contracts'];
 services.forEach((service) => {
   fs.writeFileSync(
     path.join(__dirname, '..', 'services', service, '.env'),
-    fs.readFileSync(path.join(__dirname, '..', 'services', service, '.env.sample'), 'utf8'),
+    fs.readFileSync(path.join(__dirname, '..', 'services', service, '.env.sample'), 'utf8')
   );
 });
