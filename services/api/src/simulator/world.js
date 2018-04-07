@@ -3,12 +3,16 @@ const createAgentStorage = require('./agents/storage');
 const createAgentFarm = require('./agents/farm');
 
 module.exports = function createWorld() {
+  let nextId = 1;
   const world = {};
   const agents = [];
 
+  function getId() {
+    return nextId++;
+  }
   function printWorld() {
     agents.forEach((agent) => {
-      console.log(agent.getState());
+      console.log(agent.getType(), agent.getId(), agent.getState());
     });
   }
   function tick() {
@@ -40,5 +44,6 @@ module.exports = function createWorld() {
   world.createCrop = createCrop;
   world.createStorage = createStorage;
   world.createFarm = createFarm;
+  world.getId = getId;
   return world;
 }

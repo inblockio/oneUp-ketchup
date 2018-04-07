@@ -2,6 +2,8 @@ const createStorage = require('./storage');
 
 const HARVEST_TIME = 10;
 module.exports = function createFarm(farm, world) {
+  const id = world.getId();
+  const type = 'FARM';
   let harvestElapsed = 0;
 
   const storage = world.createStorage({
@@ -29,6 +31,10 @@ module.exports = function createFarm(farm, world) {
 
   return {
     tick,
+
+    getId: () => id,
+    getType: () => type,
+
     getState,
   };
 }

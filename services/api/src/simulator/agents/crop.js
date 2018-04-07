@@ -1,5 +1,7 @@
 module.exports = function createCrop(crop, world) {
-  console.log(world);
+  const id = world.getId();
+  const type = 'CROP';
+
   let quality = 100;
   let isRotten = false;
   const { rottingRate } = crop;
@@ -11,7 +13,7 @@ module.exports = function createCrop(crop, world) {
     if (!isRotten) {
       quality -= crop.rottingRate;
       if (quality < 0) {
-        isRotten = false;
+        isRotten = true;
       }
     }
   }
@@ -28,6 +30,10 @@ module.exports = function createCrop(crop, world) {
 
   return {
     tick,
+
+    getId: () => id,
+    getType: () => type,
+
     getState,
   };
 }
