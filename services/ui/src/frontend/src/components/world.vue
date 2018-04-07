@@ -50,7 +50,7 @@ import * as THREE from 'three';
 // import { mapGetters } from 'vuex';
 import { getTexture } from '../util';
 import FirstPersonControls from './FirstPersonControls';
-// import { materials } from '../store/modules/grid';
+import { materials } from '../store/modules/grid';
 
 // console.log(FirstPersonControls);
 THREE.FirstPersonControls = FirstPersonControls;
@@ -60,18 +60,39 @@ const world = {
   camera: null,
   controls: null,
   renderer: null,
-  worldFactor: null,
   clock: null,
+  materials,
+  gridMesh: [],
 };
+
+const tiles = [
+  { x: 2, y: 2, type: 'PLOT_INACTIVE' },
+  { x: 2, y: 3, type: 'PLOT_INACTIVE' },
+  { x: 3, y: 2, type: 'PLOT_INACTIVE' },
+  { x: 3, y: 3, type: 'PLOT_INACTIVE' },
+  { x: 38, y: 2, type: 'PLOT_INACTIVE' },
+  { x: 38, y: 3, type: 'PLOT_INACTIVE' },
+  { x: 39, y: 2, type: 'PLOT_INACTIVE' },
+  { x: 39, y: 3, type: 'PLOT_INACTIVE' },
+  { x: 38, y: 38, type: 'PLOT_INACTIVE' },
+  { x: 38, y: 39, type: 'PLOT_INACTIVE' },
+  { x: 39, y: 38, type: 'PLOT_INACTIVE' },
+  { x: 39, y: 39, type: 'PLOT_INACTIVE' },
+  { x: 2, y: 38, type: 'PLOT_INACTIVE' },
+  { x: 2, y: 39, type: 'PLOT_INACTIVE' },
+  { x: 3, y: 38, type: 'PLOT_INACTIVE' },
+  { x: 3, y: 39, type: 'PLOT_INACTIVE' },
+];
 
 export default {
   name: 'World',
   data() {
     return {
-      worldScaleX: 42,
-      worldScaleY: 42,
-      worldWidth: 1000,
-      worldDepth: 1000,
+      worldWidth: 42,
+      worldDepth: 42,
+      worldScaleX: 1000,
+      worldScaleY: 1000,
+      worldFactor: null,
       innerWidth: 1920,
       innerHeight: 1080,
       controlsEnabled: true,
@@ -85,30 +106,87 @@ export default {
     this.innerWidth = window.innerWidth;
   },
   mounted() {
-    // this.createGrid(this.worldScaleX, this.worldScaleY);
-    this.init();
-    this.animate();
+    if (this.grid.length === 0) {
+      this.createGrid(this.worldScaleX, this.worldScaleY);
+    }
+    if (world.renderer === null) {
+      this.init();
+      this.animate();
+    }
+    // this.getTile();
+    setInterval(this.tick, 1000);
+    this.renderGrid();
+  },
+  watch: {
   },
   created() {
     // eslint-disable-next-line
     // window.addEventListener('keyup', this.logStats);
   },
   methods: {
+    tick() {
+      console.log('tick');
+    },
     createGrid(width, height) {
       const grid = [];
       for (let y = 0; y < height; y++) {
         const gridRow = [];
         for (let x = 0; x < width; x++) {
-          gridRow.push({ type: 'sand' });
+          gridRow.push({ type: 'PLOT_INACTIVE' });
         }
         grid.push(gridRow);
       }
       this.grid = grid;
+      // const newMesh = this.getGridMesh(5, 5, 'PLOT_INACTIVE');
+      // console.log(newMesh);
       // this.$store.dispatch('grid/setGrid', grid);
     },
-
+    renderGrid() {
+      // eslint-disable-next-line
+      // Object.keys(this.grid).forEach((x) => {});this.setMesh(5, 5, this.getMesh('PLOT_INACTIVE'));
+      Object.keys(tiles).forEach((i) => {
+        this.grid[tiles[i].x][tiles[i].y].type = 'PLOT_INACTIVE';
+        this.setMesh(tiles[i].x, tiles[i].y, this.getMesh('PLOT_INACTIVE'));
+      });
+    },
+    setMesh(x, y, mesh) {
+      const mapPosition = this.calcTile(x, y);
+      mesh.position.x = mapPosition.x;
+      mesh.position.z = mapPosition.y;
+      if (typeof world.gridMesh[`${x}_${y}`] === 'undefined') {
+        world.gridMesh[`${x}_${y}`] = mesh;
+        world.scene.add(world.gridMesh[`${x}_${y}`]);
+      }
+    },
+    getMesh(type = 'PLOT_INACTIVE') {
+      // eslint-disable-next-line
+      const geometry = new THREE.PlaneGeometry(this.worldScaleX / this.worldWidth, this.worldScaleY / this.worldDepth, this.worldWidth - 1, this.worldDepth - 1);
+      geometry.rotateX(-Math.PI / 2);
+      const texture = getTexture(`textures/${this.getMaterial(type)}`, 1, 1);
+      const material = new THREE.MeshBasicMaterial({ color: 0xffffff, map: texture });
+      const mesh = new THREE.Mesh(geometry, material);
+      mesh.position.y = 1;
+      return mesh;
+    },
+    calcTile(x, y) {
+      console.log(x, y);
+      // eslint-disable-next-line
+      return { x: ((x * this.worldFactor) - (this.worldScaleX / 2)), y: ((y * this.worldFactor) - (this.worldScaleY / 2)) };
+    },
+    getTile(x = 5, y = 5) {
+      return this.grid[x][y];
+    },
+    setTile(x = 5, y = 5) {
+      const gridTile = this.grid[x][y];
+      const texture = this.getMaterial(gridTile.type);
+      console.log(this.grid[x][y], texture);
+    },
+    getMaterial(type = 'PLOT_INACTIVE') {
+      console.log(type);
+      return typeof world.materials[type.toUpperCase()] !== 'undefined' ? world.materials[type.toUpperCase()].texture : 'sand.jpg';
+    },
     init() {
-      world.worldFactor = this.worldScaleX / this.worldWidth;
+      this.worldFactor = this.worldScaleX / this.worldWidth;
 
       world.clock = new THREE.Clock();
       world.renderer = new THREE.WebGLRenderer();
@@ -132,9 +210,9 @@ export default {
       world.controls.lookSpeed = 0.2;
 
       // eslint-disable-next-line
-      const geometry = new THREE.PlaneGeometry(this.worldWidth, this.worldDepth, this.worldWidth - 1, this.worldDepth - 1);
+      const geometry = new THREE.PlaneGeometry(this.worldScaleX, this.worldScaleY, this.worldWidth - 1, this.worldDepth - 1);
       geometry.rotateX(-Math.PI / 2);
-      const texture = getTexture('textures/sand.jpg', 1, 1);
+      const texture = getTexture('textures/sand.jpg', this.worldWidth, this.worldDepth);
       const material = new THREE.MeshBasicMaterial({ color: 0xffffff, map: texture });
       const mesh = new THREE.Mesh(geometry, material);
       world.scene.add(mesh);
