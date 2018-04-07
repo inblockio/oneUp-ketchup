@@ -13,10 +13,18 @@ export const types = {
 };
 
 export const materials = {
-  SAND: 'SAND',
-  FARMLAND: 'FARMLAND',
-  FARM: 'FARM',
-  ROAD: 'ROAD',
+  SAND: {
+    texture: 'sand.jpg',
+  },
+  PLOT_INACTIVE: {
+    texture: 'plot_inactive.png',
+  },
+  PLOT_GROWING: {
+    texture: 'plot_growing.jpg',
+  },
+  PLOT_READY: {
+    texture: 'plot_ready.png',
+  },
 };
 
 export default {
