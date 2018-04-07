@@ -20,11 +20,11 @@ contract TomatoesMarket {
 
   struct Order {
     uint orderId;
-    uint crateId;
     address source;
     address destination;
     OrderState state;
     address carrier;
+    uint crateId;
   }
 
   //                00        01          02
@@ -45,7 +45,7 @@ contract TomatoesMarket {
   mapping(uint => Order) orders;
 
   //Events
-  event LogNewOrder(uint orderId, uint crateId, address source, address destination, OrderState state);
+  event LogNewOrder(uint orderId, address source, address destination, OrderState state);
   event LogExecutingOrder(uint orderId, address carrier);
   event LogCompletedOrder(uint orderId);
 
@@ -67,10 +67,10 @@ contract TomatoesMarket {
     crates[lastCrateId] = Crate(lastCrateId, farmer, amount, quality, harvestTime);
   }
 
-  function newOrder(uint crateId, address source, address destination) public {
+  function newOrder(address source, address destination) public {
     lastOrderId++;
-    orders[lastOrderId] = Order(lastOrderId, crateId, source, destination, OrderState.Placed, address(0));
-    LogNewOrder(lastOrderId, crateId, source, destination, OrderState.Placed);
+    orders[lastOrderId] = Order(lastOrderId, source, destination, OrderState.Placed, address(0), 0);
+    LogNewOrder(lastOrderId, source, destination, OrderState.Placed);
   }
 
   function getOrder(uint id) public view returns(uint orderId, uint crateId, address source, address destination, OrderState state, address carrier) {
