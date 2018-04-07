@@ -13,7 +13,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
 import LayoutFull from '../layout/full.vue';
 import LayoutMinimal from '../layout/minimal.vue';
 import Card from '../components/card.vue';
@@ -28,15 +27,8 @@ export default {
     world: World,
   },
   computed: {
-    ...mapGetters('voting', ['choices', 'currentChoice']),
   },
   methods: {
-    setVote(choice) {
-      this.$store.dispatch('voting/updateChoice', { choice });
-    },
-    submitVote() {
-      this.$store.dispatch('voting/submitChoice');
-    },
   },
 };
 </script>
@@ -48,8 +40,8 @@ export default {
   position:fixed;
   top:0;
   left:0;
-  height:100%;
-  width:100%;
+  /*height:100%;
+  width:100%;*/
 }
 
 </style>
