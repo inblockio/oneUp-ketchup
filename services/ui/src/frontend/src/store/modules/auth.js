@@ -1,21 +1,9 @@
 import HTTP from '../../http';
 import Notification from '../../notification';
 import router from '../../router';
+import types from './auth-types';
+import authMutations from './auth-mutations';
 
-export const types = {
-  UPDATE_EMAIL: 'UPDATE_EMAIL',
-  CLEAR_EMAIL: 'CLEAR_EMAIL',
-  UPDATE_PASSWORD: 'UPDATE_PASSWORD',
-  CLEAR_PASSWORD: 'CLEAR_PASSWORD',
-  UPDATE_PASSWORDCONFIRM: 'UPDATE_PASSWORDCONFIRM',
-  CLEAR_PASSWORDCONFIRM: 'CLEAR_PASSWORDCONFIRM',
-  SET_AUTHENTICATED: 'SET_AUTHENTICATED',
-  SET_ACCESS_TOKEN: 'SET_ACCESS_TOKEN',
-  CLEAR_ACCESS_TOKEN: 'CLEAR_ACCESS_TOKEN',
-  SET_AUTH_ERROR: 'SET_AUTH_ERROR',
-  CLEAR_AUTH_ERROR: 'CLEAR_AUTH_ERROR',
-  SET_ERROR: 'SET_ERROR',
-};
 
 export default {
   namespaced: true,
@@ -35,50 +23,7 @@ export default {
     passwordConfirm: state => state.passwordConfirm,
     authenticated: state => state.authenticated,
   },
-  mutations: {
-    // email
-    [types.UPDATE_EMAIL](state, value) { state.email = value; },
-    [types.CLEAR_EMAIL](state) { state.email = ''; },
-
-    // password
-    [types.UPDATE_PASSWORD](state, value) {
-      state.password = value;
-    },
-    [types.CLEAR_PASSWORD](state) {
-      state.password = '';
-    },
-
-    // password confirm
-    [types.UPDATE_PASSWORDCONFIRM](state, value) {
-      state.passwordConfirm = value;
-    },
-    [types.CLEAR_PASSWORDCONFIRM](state) {
-      state.passwordConfirm = '';
-    },
-
-    // auth token
-    [types.SET_AUTHENTICATED](state, value) {
-      state.authenticated = value;
-    },
-
-    // auth token
-    [types.SET_ACCESS_TOKEN](state, accessToken) {
-      state.accessToken = accessToken;
-    },
-    [types.CLEAR_ACCESS_TOKEN](state) {
-      state.accessToken = null;
-    },
-
-    // boot
-    [types.SET_BOOTED](state) {
-      state.booted = true;
-    },
-
-    // error
-    [types.SET_ERROR](state, error) {
-      state.error = error;
-    },
-  },
+  mutations: authMutations,
   actions: {
     /**
      * updateEmail will update the email
