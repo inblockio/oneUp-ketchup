@@ -1,5 +1,8 @@
-const uuid = require('uuid/v1');
-module.exports = function createStorage(storage, world) {
+module.exports = async function createStorage(storage, world) {
+  const {
+    name,
+    position,
+  } = storage;
   const id = world.getId();
   const type = 'STORAGE';
   const crops = [];
@@ -23,9 +26,11 @@ module.exports = function createStorage(storage, world) {
 
   function getState() {
     return {
-      ...storage,
-      type: 'STORAGE',
-      crops: crops.length,
+      id,
+      type,
+      name,
+      position,
+      crops: crops.map(crop => crop.getId()),
     };
   }
 

@@ -1,14 +1,15 @@
 module.exports = function createEngine(world) {
-  const TICK_TIMER = 2000;
+  const TICK_TIMER = 200;
   let currentTick = 0;
   let interval;
 
-  function tick() {
+  async function tick() {
     console.log('Engine: Thick');
-    world.tick();
+    await world.tick();
+    setTimeout(tick, TICK_TIMER);
   }
-  function start() {
-    interval = setInterval(tick, 2000);
+  async function start() {
+    await tick();
   }
 
   return {

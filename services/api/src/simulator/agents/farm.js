@@ -1,32 +1,44 @@
+const {
+  HARVEST_TIME,
+} = require('../constants');
 const createStorage = require('./storage');
 
-const HARVEST_TIME = 10;
-module.exports = function createFarm(farm, world) {
+module.exports = async function createFarm(farm, world) {
+  const {
+    name,
+    position,
+  } = farm;
   const id = world.getId();
   const type = 'FARM';
-  let harvestElapsed = 0;
+  let ticksToNextHarvest = 0;
 
-  const storage = world.createStorage({
-    name: `${farm.name} storage`,
+  const storage = await world.createStorage({
+    name: `${name} storage`,
   });
 
-  function doHarvest() {
-    const crop = world.createCrop({
-      name: `${farm.name} crop`,
+  async function doHarvest() {
+    const crop = await world.createCrop({
+      name: `${name} crop`,
       quantity: 10,
       rottingRate: 10,
     });
-    storage.store(crop);
+    await storage.store(crop);
   }
-  function tick() {
-    harvestElapsed--;
-    if (harvestElapsed <= 0) {
-      doHarvest();
-      harvestElapsed = HARVEST_TIME;
+  async function tick() {
+    ticksToNextHarvest--;
+    if (ticksToNextHarvest <= 0) {
+      await doHarvest();
+      ticksToNextHarvest = HARVEST_TIME;
     }
   }
   function getState() {
-    return { ...farm, harvestElapsed };
+    return {
+      id,
+      type,
+      name,
+      position,
+      ticksToNextHarvest,
+    };
   }
 
   return {

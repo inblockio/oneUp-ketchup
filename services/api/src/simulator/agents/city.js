@@ -1,11 +1,16 @@
-module.exports = function createCity(city, world) {
+module.exports = async function createCity(city, world) {
+  const {
+    hungerPerTick,
+    name,
+    position,
+  } = city;
   const id = world.getId();
   const type = 'CITY';
-  const { hungerPerTick } = city;
   let starvingLevel = 0;
 
-  const storage = world.createStorage({
+  const storage = await world.createStorage({
     name: `${city.name} storage`,
+    position: Object.assign({}, position),
   });
 
   function toString() {
@@ -21,8 +26,12 @@ module.exports = function createCity(city, world) {
   }
   function getState() {
     return {
-      ...city,
+      id,
+      type,
+      name,
+      position,
       starvingLevel,
+      hungerPerTick,
     };
   }
 
@@ -31,6 +40,7 @@ module.exports = function createCity(city, world) {
 
     getId: () => id,
     getType: () => type,
+    getPosition: () => position,
 
     getState,
     getStarvingLevel: () => {},
