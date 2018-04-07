@@ -28,15 +28,9 @@ export default {
     world: World,
   },
   computed: {
-    ...mapGetters('voting', ['choices', 'currentChoice']),
+    ...mapGetters('drones', ['drones']),
   },
   methods: {
-    setVote(choice) {
-      this.$store.dispatch('voting/updateChoice', { choice });
-    },
-    submitVote() {
-      this.$store.dispatch('voting/submitChoice');
-    },
   },
 };
 </script>
@@ -48,8 +42,8 @@ export default {
   position:fixed;
   top:0;
   left:0;
-  height:100%;
-  width:100%;
+  /*height:100%;
+  width:100%;*/
 }
 
 </style>

@@ -4,14 +4,16 @@ import createLogger from 'vuex/dist/logger';
 
 import auth from './modules/auth';
 import ui from './modules/ui';
-import voting from './modules/voting';
+import drones from './modules/drones';
+import farms from './modules/farms';
+import grid from './modules/grid';
 
 Vue.use(Vuex);
 
 const debug = process.env.NODE_ENV !== 'production';
 
 export default new Vuex.Store({
-  modules: { auth, ui, voting },
+  modules: { auth, ui, drones, farms, grid },
   strict: debug,
   plugins: debug ? [createLogger()] : [],
 });
