@@ -45,7 +45,7 @@ contract TomatoesMarket {
   mapping(uint => Order) orders;
 
   //Events
-  event LogNewOrder(uint orderId, uint crateId, address source, address destination);
+  event LogNewOrder(uint orderId, uint crateId, address source, address destination, OrderState state);
   event LogExecutingOrder(uint orderId, address carrier);
   event LogCompletedOrder(uint orderId);
 
@@ -63,23 +63,33 @@ contract TomatoesMarket {
   }
 
   function addCrate(address farmer, uint amount, uint quality, uint harvestTime) public {
-    
+    lastCrateId++;
+    crates[lastCrateId] = Crate(lastCrateId, farmer, amount, quality, harvestTime);
   }
 
-  function newOrder(uint crateId, address source, address destination, uint amount, uint quality) public {
+  function newOrder(uint crateId, address source, address destination) public {
     lastOrderId++;
     orders[lastOrderId] = Order(lastOrderId, crateId, source, destination, OrderState.Placed, address(0));
-    LogNewOrder(lastOrderId, crateId, source, destination);
+    LogNewOrder(lastOrderId, crateId, source, destination, OrderState.Placed);
+  }
+
+  function getOrder(uint id) public view returns(uint orderId, uint crateId, address source, address destination, OrderState state, address carrier) {
+    Order storage order = orders[id];
+    return (order.orderId, order.crateId, order.source, order.destination, order.state, order.carrier);
   }
 
   function executeOrder(uint orderId, address carrier) public {
-    orders[orderId].state = OrderState.Executing;
-    orders[orderId].carrier = carrier;
+    Order storage order = orders[orderId];
+    require(order.state == OrderState.Placed);
+    order.state = OrderState.Executing;
+    order.carrier = carrier;
     LogExecutingOrder(orderId, carrier);
   }
 
   function completeOrder(uint orderId) public {
-    orders[orderId].state = OrderState.Completed;
+    Order storage order = orders[orderId];
+    require(order.state == OrderState.Executing);
+    order.state = OrderState.Completed;
     LogCompletedOrder(orderId);
   }
 }
